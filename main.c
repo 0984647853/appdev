@@ -1,18 +1,32 @@
 //this is main.c
 #include<stdio.h>
+#include<signal.h>
 #include<stdlib.h>
 #include<time.h>
 #include"screen.h"	//for user-defined header, use double quotes
+#include"sound.h"
 int main(){
-	int arr[80]; // for making a bar chart
-	srand(time(NULL));
-	for(int i=0;i<80;i++)
-		arr[i] = rand()%70 + 30;
-	clearScreen();
-	setColors(RED,bg(YELLOW));
-//	printf("Printed from main.\n");
-	barChart(arr);
+	FILE *f;
+	short sd[RATE]; //for all sample in 1 second
+	while(1){
+		int ret = system(CMD);
+		if(ret==SIGINT) break;
+		f = fopen("test.wav","r");
+		clearScreen();
+		setColors(GREEN,bg(BLACK));
+//		printf("Printed from main.\n");
+//		barChart(arr);
+		if(f == NULL){
+			printf("cannot open the wav file\n");
+			return 1;
+		}
+		struct WAVHDR h; //instance of wav header
+		fread(&h,sizeof(h),1,f);
+		displayWAVHDR(h);	//show wav header information
+		fread(&sd, sizeof(sd),1,f);
+		displayWAVDATA(sd);
+		fclose(f); //close the opened file
+	}
 	resetColors();
-	printf("Another message\n");
 	getchar();
 }
