@@ -94,33 +94,34 @@ void testTone(int c, int f, float d){
 		return;
 	}
 	struct WAVHDR h; //we need to prepare a WAV header
+	int samples = d*44100;
 	fillID(h.ChunkID, "RIFF");
 	fillID(h.Format, "WAVE");
-	fillID(h.Subchunk1ID,"fmt");
+	fillID(h.Subchunk1ID,"fmt ");
 	fillID(h.Subchunk2ID,"data");
 	h.Subchunk1Size = 16; //for PCM
 	h.AudioFormat = 1;
 	h.NumChannels = c;
 	h.SampleRate = 44100;
 	h.BitsperSample = 16;
-	if(c == 1){ //for mono channel
-		h.ByteRate = h.SampleRate * c * h.BitsperSample;
-		h.BlockAlign = c * h.BitsperSample / 16;
-		h.Subchunk2Size = d * h.SampleRate * h.BlockAlign;
-		h.ChunkSize = h.Subchunk2Size + 36;
-	}
-	//prepare sound data
-	short data[441000]; //d*h.SampleRate];
-	for(int i=0;i<d*h.SampleRate;i++){
-		data[i] = 32768 * sin(2*PI*i/44100);
-	}
+	h.ByteRate = h.SampleRate * c * h.BitsperSample / 8;
+	h.BlockAlign = c * h.BitsperSample / 8;
+	h.Subchunk2Size = d * h.SampleRate * h.BlockAlign;
+	h.ChunkSize = h.Subchunk2Size + 36;
 	FILE *fp = fopen("testTone.wav", "w");
 	if(fp == NULL){
 		printf("we cannot open the file\n");
 		return;
 	}
 	fwrite(&h, sizeof(h),1, fp); //write the header
-	fwrite(data, d * h.SampleRate*sizeof(short), 1,fp);
+	for(int i=0;i<d*h.SampleRate;i++){
+		short data = 32767.0 * sin(2*PI*i*f/44100);
+		fwrite(&data, sizeof(short), 1,fp);
+		if(c==2){
+			short dR = 32767.0 * sin(2*PI*i*f/2/44100);
+			fwrite(&dR, sizeof(short), 1, fp);
+		}
+	}
 	fclose(fp);
 	printf("Test tone is generated !\n");
 }

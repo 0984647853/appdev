@@ -1,4 +1,4 @@
-//this is main.c
+ //this is main.c
 #include<stdio.h>
 #include<signal.h>
 #include<stdlib.h>
