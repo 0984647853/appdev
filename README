@@ -1,1 +1,50 @@
 # this is the first version
+This project is to turn a Raspberry PI as an audio device. The device is able to do 2 functions: as a sound collector and as a test-tone generato.
+
+Table of Content
+	1. Configuration Instructions
+	2. Installation Instructions
+	3. Operating Instructions
+	4. File list (Manifest)
+	5. Copyright / Copyleft
+	6. Contact Information
+	7. Credits and Acknowledges
+
+1. Configuration Instructions 
+
+	The application is running on Raspberry PI 3 mode B. This PI should come with a USB sound card, a network connection, a microphone.
+	
+	1.1 Configure USB sound card as default audio device
+
+	...
+
+2. Installation Instructions
+	
+	...
+
+3. Operating Instructions
+
+	...
+
+4. File list (manifest)
+
+	4.1 main.c
+		The file which is the main file containning the functions of other .c file to run the program.
+	4.2 sound.c (included header files sound.h, comm.h, and screen.h)
+		Display information of WAVE file format and display .wav file data.
+	4.3 screen.c (included header files screen.h)
+		Display .wav file data in bar-diagram.
+	4.4 comm.c (included header file comm.h)
+		Send data to server.
+	4.5 makefile
+		Compile all the file.
+	
+5. Copyright / Copyleft
+
+	...
+
+6. Contact Information
+
+	...
+	
+7. Credits and Acknowledges
